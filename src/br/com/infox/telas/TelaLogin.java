@@ -4,38 +4,43 @@
  * and open the template in the editor.
  */
 package br.com.infox.telas;
+
 import java.sql.*;
 import br.com.infox.dal.ModuloConexao;
 import javax.swing.JOptionPane;
+
 /**
  *
  * @author igors
  */
 public class TelaLogin extends javax.swing.JFrame {
-Connection conexao = null;
-PreparedStatement pst = null; //manipular instruções sql
-ResultSet rs = null; //Exibe o resultado das intruções sql
 
-public void logar(){
-    String sql = "select * from tbusuario where login=? and senha=?";
-    try {
+    Connection conexao = null;
+    PreparedStatement pst = null; //manipular instruções sql
+    ResultSet rs = null; //Exibe o resultado das intruções sql
+
+    public void logar() {
+        String sql = "select * from tbusuarios where login=? and senha=?";
+        try {
         //As linha abaixo preparam a consulta ao banco em função do que foi digitado nas caixas de texto
-        //O ? é substituido pelo conteúdo das variáves
-        pst = conexao.prepareStatement(sql);
-        pst.setString(1, txtUsuario.getText());
-        pst.setString(2, txtSenha.getText());
-        //A linha abaixo executa a query
-        rs = pst.executeQuery();
-        //Se existir user e senha correspondente
-        if(rs.next()){
+            //O ? é substituido pelo conteúdo das variáves
+            pst = conexao.prepareStatement(sql);
+            pst.setString(1, txtUsuario.getText());
+            pst.setString(2, txtSenha.getText());
+            //A linha abaixo executa a query
+            rs = pst.executeQuery();
+            //Se existir user e senha correspondente
+            if (rs.next()) {
+                TelaPrincipal principal = new TelaPrincipal();
+                principal.setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(null, "Usuário ou senha inválidos");
+            }
             
-        } else {
-            JOptionPane.showMessageDialog(null, "Usuário ou senha inválidos");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
         }
-        
-    } catch (Exception e) {
     }
-}
 
     /**
      * Creates new form TelaLogin
@@ -45,9 +50,9 @@ public void logar(){
         conexao = ModuloConexao.conector();
         // A linha abaixo serve ao status da conexão
         //System.out.println(conexao);
-        if(conexao != null){
+        if (conexao != null) {
             lblStatus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/infox/icones/conOK.png")));
-        }else{
+        } else {
             lblStatus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/infox/icones/conOFF.png")));
         }
     }
@@ -86,6 +91,11 @@ public void logar(){
         });
 
         btnLogin.setText("Login");
+        btnLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoginActionPerformed(evt);
+            }
+        });
 
         txtSenha.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -152,6 +162,11 @@ public void logar(){
     private void txtSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSenhaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtSenhaActionPerformed
+
+    private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
+        // chamando o método logar
+        logar();
+    }//GEN-LAST:event_btnLoginActionPerformed
 
     /**
      * @param args the command line arguments
