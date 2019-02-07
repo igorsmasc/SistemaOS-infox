@@ -5,6 +5,11 @@
  */
 package br.com.infox.telas;
 
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.Locale;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author igors
@@ -45,6 +50,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sistema para controle de Ordem de Serviço");
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
 
         javax.swing.GroupLayout DesktopLayout = new javax.swing.GroupLayout(Desktop);
         Desktop.setLayout(DesktopLayout);
@@ -80,6 +90,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         menCadUsu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.ALT_MASK));
         menCadUsu.setText("Usuários");
+        menCadUsu.setEnabled(false);
         menCad.add(menCadUsu);
 
         Menu.add(menCad);
@@ -88,6 +99,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         menRelSer.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.ALT_MASK));
         menRelSer.setText("Serviços");
+        menRelSer.setEnabled(false);
         menRel.add(menRelSer);
 
         Menu.add(menRel);
@@ -96,6 +108,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         menAjuSob.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, java.awt.event.InputEvent.ALT_MASK));
         menAjuSob.setText("Sobre");
+        menAjuSob.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menAjuSobActionPerformed(evt);
+            }
+        });
         menAju.add(menAjuSob);
 
         Menu.add(menAju);
@@ -104,6 +121,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         menOpcSai.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
         menOpcSai.setText("Sair");
+        menOpcSai.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menOpcSaiActionPerformed(evt);
+            }
+        });
         menOpc.add(menOpcSai);
 
         Menu.add(menOpc);
@@ -132,13 +154,36 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 .addComponent(lblData))
         );
 
-        setSize(new java.awt.Dimension(801, 616));
+        setSize(new java.awt.Dimension(801, 598));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void menCadOSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menCadOSActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_menCadOSActionPerformed
+
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        // As linhas abaixo substituem a label lblData pela data atual do sistema
+        // ao inicializar o form
+        Date data = new Date();
+        DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.SHORT);
+        lblData.setText(dateFormat.format(data));
+        
+    }//GEN-LAST:event_formWindowActivated
+
+    private void menOpcSaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menOpcSaiActionPerformed
+        // Exibe uma caixa de dialogo;
+        int sair = JOptionPane.showConfirmDialog(null, "Tem certeza quer deseja sair?","Atenção", JOptionPane.YES_NO_OPTION);
+        if(sair == JOptionPane.YES_OPTION){
+            System.exit(0);
+        }
+    }//GEN-LAST:event_menOpcSaiActionPerformed
+
+    private void menAjuSobActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menAjuSobActionPerformed
+        // Chamando a tela sobre
+        TelaSobre sobre = new TelaSobre();
+        sobre.setVisible(true);
+    }//GEN-LAST:event_menAjuSobActionPerformed
 
     /**
      * @param args the command line arguments
@@ -185,10 +230,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu menCad;
     private javax.swing.JMenuItem menCadCli;
     private javax.swing.JMenuItem menCadOS;
-    private javax.swing.JMenuItem menCadUsu;
+    public static javax.swing.JMenuItem menCadUsu;
     private javax.swing.JMenu menOpc;
     private javax.swing.JMenuItem menOpcSai;
     private javax.swing.JMenu menRel;
-    private javax.swing.JMenuItem menRelSer;
+    public static javax.swing.JMenuItem menRelSer;
     // End of variables declaration//GEN-END:variables
 }
